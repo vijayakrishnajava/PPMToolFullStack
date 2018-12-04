@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.service.MapValidationService;
@@ -47,4 +47,27 @@ public class ProjectController {
 	
 	}
 	
+	
+	@GetMapping("/{identifier}")
+	public ResponseEntity<?> findProject(@PathVariable("identifier") String identiier) {
+		
+		Project project = this.projectService.findProject(identiier);
+		
+		return new ResponseEntity<>(project, HttpStatus.OK);
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> findAll() {
+		
+		return new ResponseEntity<>(this.projectService.findAll(), HttpStatus.OK); 
+		
+	}
+	
+	@DeleteMapping("/{identifier}")
+	public ResponseEntity<?> deleteProject(@PathVariable String identifier) { 
+		
+		this.projectService.deleteProject(identifier);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
